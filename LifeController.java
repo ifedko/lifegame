@@ -8,12 +8,12 @@ public class LifeController {
     LifeController() {
     }
 
-    public LifeArea fillArea(LifeArea area) {
+    public LifeArea fillArea(LifeArea area) throws Exception {
         area.randomFillArea();
         return area;
     }
 
-    public LifeArea updateArea(LifeArea currentArea) {
+    public LifeArea updateArea(LifeArea currentArea) throws Exception {
         LifeArea nextArea = new LifeArea(currentArea.getAreaRows(), currentArea.getAreaColumns());
         int iMax = currentArea.getAreaRows();
         int jMax = currentArea.getAreaColumns();

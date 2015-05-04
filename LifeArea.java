@@ -19,7 +19,7 @@ public class LifeArea {
         this.cells = new LifeCell[numberRows][numberColumns];
     }
 
-    public void randomFillArea() {
+    public void randomFillArea() throws Exception {
         int iMax = this.getAreaRows();
         int jMax = this.getAreaColumns();
         Random random = new Random();
@@ -33,7 +33,11 @@ public class LifeArea {
         }
     }
 
-    public void addCell(LifeCell cell) {
+    public void addCell(LifeCell cell) throws Exception {
+        if (!isExistPositionForCell(cell)) {
+            throw new Exception("Cell cannot be added, because cell position is outside the lifearea.");
+        }
+
         int cellRowPosition = cell.getRowPosition();
         int cellColumnPosition = cell.getColumnPosition();
         this.cells[cellRowPosition][cellColumnPosition] = cell;
@@ -51,7 +55,11 @@ public class LifeArea {
         return cells;
     }
 
-    public int getCountNeighbors(LifeCell cell) {
+    public int getCountNeighbors(LifeCell cell) throws Exception {
+        if (isExistPositionForCell(cell)) {
+            throw new Exception("Cell does not exist for counting neighbors.");
+        }
+
         LifeCell[][] cells = getCells();
         int countAliveNeighbors = 0;
         int currentRow = cell.getRowPosition();
@@ -61,6 +69,11 @@ public class LifeArea {
         int neighborRowMax = (currentRow == (this.numberRows - 1)) ? currentRow : (currentRow + 1);
         int neighborColumnStart = (currentColumn == 0) ? 0 : (currentColumn - 1);
         int neighborColumnMax = (currentColumn == (this.numberColumns - 1)) ? currentColumn : (currentColumn + 1);
+
+        if (!isExistPosition(neighborColumnStart, neighborRowStart)
+                || !isExistPosition(neighborColumnMax, neighborRowMax)) {
+            throw new Exception("Extreme positions of neighbor cells are outside the lifearea.");
+        }
 
         for (int neighborRow = neighborRowStart; neighborRow <= neighborRowMax; neighborRow++) {
             for (int neighborColumn = neighborColumnStart; neighborColumn <= neighborColumnMax; neighborColumn++) {
@@ -76,6 +89,17 @@ public class LifeArea {
         }
 
         return countAliveNeighbors;
+    }
+
+    private boolean isExistPositionForCell(LifeCell cell) {
+        int cellColumn = cell.getColumnPosition();
+        int cellRow = cell.getRowPosition();
+
+        return isExistPosition(cellColumn, cellRow);
+    }
+
+    private boolean isExistPosition(int columnPosition, int rowPosition) {
+        return (columnPosition < numberRows && rowPosition < numberColumns);
     }
 
 }

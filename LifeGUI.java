@@ -83,32 +83,58 @@ public class LifeGUI {
         jframe.setVisible(true);
     }
 
-    public void update() {
-        counter++;
-        this.lifeArea = controller.updateArea(this.lifeArea);
-        LifeAreaView areaView = new LifeAreaView();
-        areaView.setArea(this.lifeArea);
-        jframe.getContentPane().repaint();
+    private void update() {
+        try {
+            counter++;
+            this.lifeArea = controller.updateArea(this.lifeArea);
+            LifeAreaView areaView = new LifeAreaView();
+            areaView.setArea(this.lifeArea);
+            jframe.getContentPane().repaint();
+        } catch (Exception exception) {
+            handleException(exception);
+        }
     }
 
-    public void start() {
+    private void start() {
         isInProgress = true;
         jProcessButton.setText("Stop");
         jFillButton.setEnabled(false);
         timer.start();
     }
 
-    public void stop() {
+    private void stop() {
         isInProgress = false;
         jProcessButton.setText("Start");
         jFillButton.setEnabled(true);
         timer.stop();
     }
 
-    public void fill() {
-        this.lifeArea = this.controller.fillArea(this.lifeArea);
-        lifeAreaView.setArea(this.lifeArea);
-        jframe.getContentPane().repaint();
+    private void fill() {
+        try {
+            this.lifeArea = this.controller.fillArea(this.lifeArea);
+            lifeAreaView.setArea(this.lifeArea);
+            jframe.getContentPane().repaint();
+        } catch (Exception exception) {
+            handleException(exception);
+        }
+    }
+
+    private void handleException(Exception exception) {
+        JDialog dialog = new JDialog(jframe, "Error", true);
+        dialog.setLayout(new FlowLayout());
+        dialog.add(new JLabel("Error: \"" + exception.getMessage() + "\""));
+
+        JButton closeButton = new JButton("Close game");
+        closeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dialog.dispose();
+                System.exit(0);
+            }
+        });
+        dialog.add(closeButton);
+
+        dialog.setSize(450, 150);
+        dialog.setVisible(true);
     }
 
 }
