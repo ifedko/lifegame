@@ -56,7 +56,7 @@ public class LifeArea {
     }
 
     public int getCountNeighbors(LifeCell cell) throws Exception {
-        if (isExistPositionForCell(cell)) {
+        if (!isExistPositionForCell(cell)) {
             throw new Exception("Cell does not exist for counting neighbors.");
         }
 
