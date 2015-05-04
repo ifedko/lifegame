@@ -23,6 +23,8 @@ public class LifeGUI {
 
     Timer timer;
 
+    JDialog dialog;
+
     long counter;
 
     int delay;
@@ -120,7 +122,7 @@ public class LifeGUI {
     }
 
     private void handleException(Exception exception) {
-        JDialog dialog = new JDialog(jframe, "Error", true);
+        dialog = new JDialog(jframe, "Error", true);
         dialog.setLayout(new FlowLayout());
         dialog.add(new JLabel("Error: \"" + exception.getMessage() + "\""));
 
